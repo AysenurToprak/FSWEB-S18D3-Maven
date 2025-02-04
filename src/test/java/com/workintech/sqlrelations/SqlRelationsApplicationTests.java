@@ -131,7 +131,7 @@ class SqlRelationsApplicationTests {
 		Patient patient = new Patient();
 		patient.setName("Test");
 		patient.setSurname("Test");
-		patient.setEmail("test@test.com");
+		patient.setEmail("test1@test.com");
 		patient.setComplaint("TEST");
 		Patient savedPatient = patientRepository.save(patient);
 
@@ -146,11 +146,14 @@ class SqlRelationsApplicationTests {
 		operation.setDoctorId(savedDoctor.getId());
 		operationRepository.save(operation);
 
-		List<Operation> operationList = operationRepository.findAll();
-		Operation foundOperation = operationList.stream()
+		Operation foundOperation = operationRepository.findAll()
+				.stream()
 				.filter(operation1 -> operation1.getDoctorId() == 1)
-				.collect(Collectors.toList()).get(0);
+				.findFirst()
+				.orElse(null);
 
-		assertNotNull(foundOperation);
+		assertNotNull(foundOperation, "Operation bulunamadı!");
+
+
 	}
 }
